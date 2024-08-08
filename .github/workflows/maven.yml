@@ -21,7 +21,7 @@
         - name: Unit Tests
           run: mvn -B test --file pom.xml
 
-        - name: build the app
+        - name: Build the App
           run: |
             mvn clean
             mvn -B package --file pom.xml
