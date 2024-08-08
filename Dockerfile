@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copiar el archivo JAR de la aplicación al contenedor
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /target/*.jar app.jar
 
 # Exponer el puerto 8080
 EXPOSE 8080
