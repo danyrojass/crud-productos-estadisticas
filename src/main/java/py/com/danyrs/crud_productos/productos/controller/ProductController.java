@@ -16,6 +16,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import py.com.danyrs.crud_productos.exception.BadRequestException;
+import py.com.danyrs.crud_productos.exception.ProductNotFoundException;
 import py.com.danyrs.crud_productos.productos.model.Product;
 import py.com.danyrs.crud_productos.productos.service.ProductService;
 
@@ -57,7 +59,8 @@ public class ProductController {
     })
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable Long id) {
-        return productService.getProductById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        return productService.getProductById(id).orElseThrow(() -> new ProductNotFoundException("Product not found with ID: " + id));
+
     }
 
     @Operation(summary = "Search products by name", description = "Search for products based on the provided name")
@@ -67,6 +70,9 @@ public class ProductController {
     })
     @GetMapping("/search")
     public List<Product> searchProductsByName(@RequestParam String name) {
+        if (name == null || name.isBlank()) {
+            throw new BadRequestException("The 'name' parameter is required and cannot be empty.");
+        }
         return productService.searchProductsByName(name);
     }
     
